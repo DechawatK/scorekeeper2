@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Score from './Score'
 import ScoreUpdate from './ScoreUpdate'
 
+
 export default class ScoreBoard extends Component {
   render() {
     const { title, score, onUpdate } = this.props
