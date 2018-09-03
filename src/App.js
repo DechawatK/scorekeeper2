@@ -27,7 +27,7 @@ class App extends Component {
         <h2>GAME OF NUMBER</h2>
         <Score value={this.state.score} />
         <ScoreUpdate onClick={this.updateScore.bind(this)} />
-        <Button text="Reset" onClick={this.resetScore.bind(this)} />
+        <Button onClick={this.resetScore.bind(this)}>Reset</Button>
       </div>
     )
   }

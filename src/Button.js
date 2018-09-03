@@ -5,7 +5,7 @@ export default class Button extends Component {
     const { onClick, text } = this.props
     return (
       <div>
-        <button onClick={onClick}>{text}</button>
+        <button onClick={onClick}>{this.props.children}</button>
       </div>
     )
   }

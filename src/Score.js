@@ -7,7 +7,7 @@ export default class Score extends Component {
     return (
       <div className="score">
         {value}
-        <h4>Your score</h4>
+        <h4>Total score</h4>
       </div>
     )
   }
