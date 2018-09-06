@@ -4,7 +4,7 @@ import Button from './Button'
 
 export default class GameScreen extends Component {
   render() {
-    const { players, updateScore, backToStart, resetScore } = this.props
+    const { players, updateScore, backToStart, onSave } = this.props
     return (
       <React.Fragment>
         {players.map((player, index) => (
@@ -14,7 +14,7 @@ export default class GameScreen extends Component {
             onUpdate={score => updateScore(index, score)}
           />
         ))}
-        <Button onClick={resetScore.bind(this)}> Reset </Button>
+        <Button onClick={onSave.bind(this)}> SAVE </Button>
         <Button onClick={backToStart}> First page </Button>
       </React.Fragment>
     )

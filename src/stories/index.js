@@ -8,6 +8,18 @@ import PointButtonBar from '../components/PointButtonBar'
 import GameScreen from '../components/GameScreen'
 import StartScreen from '../components/StartScreen'
 import RoundsBar from '../components/RoundsBar'
+import SummaryScreen from '../components/SummaryScreen'
+import styled from 'styled-components'
+import PlayerHeader from '../components/PlayerHeader'
+import SummaryCard from '../components/SummaryCard'
+
+const Wrapper = styled.section`
+  width: ${props => (props.width ? props.width : '360')}px;
+  margin: 0 auto;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 10px;
+`
 
 storiesOf('Button', module)
   .addDecorator(withKnobs)
@@ -109,15 +121,68 @@ storiesOf('GameScreen', module)
     />
   ))
 
-storiesOf('SummaryScreen', module).add('single user', () => (
-  <GameScreen
-    players={[
-      {
-        name: 'John',
-        score: 0,
-      },
-    ]}
-    RoundsBar={action('roundBar')}
-    backToStart={action('backToStart')}
-  />
-))
+storiesOf('PlayerHeader', module)
+  .addDecorator(withKnobs)
+  .add('default', () => (
+    <PlayerHeader
+      title={text('Title', 'Dechawat Kesornchan')}
+      score={number('Score', 5)}
+    />
+  ))
+
+storiesOf('RoundsBar', module)
+  .add('no scores', () => (
+    <Wrapper>
+      <RoundsBar scores={[]} />
+    </Wrapper>
+  ))
+  .add('some scores', () => (
+    <Wrapper>
+      <RoundsBar scores={[0, 20, 15, 10]} />
+    </Wrapper>
+  ))
+  .add('many scores', () => (
+    <Wrapper width={200}>
+      <RoundsBar scores={[0, 20, 15, 10, 10, 0, -5, 60, 10, 30]} />
+    </Wrapper>
+  ))
+
+storiesOf('SummaryCard', module)
+  .addDecorator(withKnobs)
+  .add('no scores', () => (
+    <SummaryCard title={text('Name', 'John Doe')} scores={[0]} />
+  ))
+  .add('some scores', () => (
+    <SummaryCard
+      title={text('Title', 'John Doe')}
+      scores={[10, 20, 30, 40, 10, -5, 20, 15]}
+    />
+  ))
+  .add('lots of scores', () => (
+    <Wrapper width={200}>
+      <SummaryCard
+        title={text('Title', 'John Doe')}
+        scores={[10, 20, 30, 40, 10, -5, 20, 15]}
+      />
+    </Wrapper>
+  ))
+
+storiesOf('SummaryScreen', module)
+  .addDecorator(withKnobs)
+  .add('no players', () => (
+    <SummaryScreen
+      players={[]}
+      onAddRound={action('onAddRound')}
+      onBack={action('onBack')}
+    />
+  ))
+  .add('some players', () => (
+    <SummaryScreen
+      players={[
+        { name: 'John', scores: [10, 20, 30] },
+        { name: 'Jane', scores: [20, 30, -3] },
+      ]}
+      onAddRound={action('onAddRound')}
+      onBack={action('onBack')}
+    />
+  ))

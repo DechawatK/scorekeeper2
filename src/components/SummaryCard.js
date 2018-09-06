@@ -5,24 +5,27 @@ import RoundsBar from './RoundsBar'
 import PropTypes from 'prop-types'
 
 const StyledBoard = styled.section`
-  background-color: green;
+  background-color: lightgray;
   margin-bottom: 10px;
-  padding: 20px 30px;
+  height: 100px;
+  width: 320px;
+  padding: 3px 10px;
+  border: 1px solid gray;
 `
 
 export default class SummaryCard extends Component {
   static propTypes = {
-    title: this.propTypes.string,
-    scores: PropTypes.arrayOf(PropTypes.number),
+    title: PropTypes.string,
+    scores: PropTypes.arrayOf(PropTypes.Number),
   }
   render() {
-    const { title, score } = this.props
+    const { title, scores } = this.props
     const total =
-      score.reduce((prev, curr) => Number(prev) + Number(curr), 0) || 0
+      scores.reduce((prev, curr) => Number(prev) + Number(curr), 0) || 0
     return (
       <StyledBoard>
         <PlayerHeader title={title} score={total} />
-        <RoundsBar score={score} />
+        <RoundsBar scores={scores} />
       </StyledBoard>
     )
   }

@@ -8,11 +8,11 @@ import SummaryScreen from './SummaryScreen'
 
 class App extends Component {
   state = {
-    showStartScreen: true,
+    showStartScreen: 'start',
     players: load('players') || [],
   }
 
-  updateScore(index, value) {
+  updateScore = (index, value) => {
     const players = this.state.players
     const player = players[index]
     this.setState(
@@ -34,7 +34,7 @@ class App extends Component {
     save('players', this.state.players)
   }
 
-  resetScore() {
+  resetScore = () => {
     this.setState(
       {
         players: this.state.players.map(player => ({
@@ -46,11 +46,33 @@ class App extends Component {
     )
   }
 
+  saveRound = () => {
+    const { players } = this.state
+    this.setState(
+      {
+        showScreen: 'summary',
+        players: players.map(player => ({
+          ...player,
+          scores: [...player.scores, player.roundScore],
+          roundScore: 0,
+        })),
+      },
+      this.savePlayers
+    )
+  }
+
   startGame = () => {
     if (this.state.players.length) {
-      //or != ''
       this.setState({
-        showStartScreen: false,
+        showStartScreen: 'game',
+      })
+    }
+  }
+
+  startSummary = () => {
+    if (this.state.players.length) {
+      this.setState({
+        showStartScreen: 'summary',
       })
     }
   }
@@ -62,7 +84,7 @@ class App extends Component {
           ...this.state.players,
           {
             name: value,
-            score: 0,
+            scores: 0,
           },
         ],
       },
@@ -93,7 +115,7 @@ class App extends Component {
 
   backToStart = () => {
     this.setState({
-      showStartScreen: true,
+      showStartScreen: 'start',
     })
   }
 
@@ -102,31 +124,55 @@ class App extends Component {
       <GameScreen
         players={this.state.players}
         backToStart={this.backToStart}
-        resetScore={this.resetScore}
+        onSave={this.resetScore}
         updateScore={this.updateScore}
       />
     )
   }
 
-  render() {
+  renderStartScreen = () => {
+    return (
+      <div>
+        <StartScreen
+          PlayersList={this.state.players}
+          deletePlayer={this.deletePlayer}
+          startGame={this.startSummary}
+          deleteAllPlayers={this.deleteAllPlayers}
+          addPlayer={this.addPlayer}
+        />
+      </div>
+    )
+  }
+
+  renderSummaryScreen() {
+    return (
+      <div>
+        <SummaryScreen
+          players={this.state.players}
+          onAddRound={this.startGame}
+          onBack={this.backToStart}
+        />
+      </div>
+    )
+  }
+
+  renderScreen = () => {
     const { showStartScreen } = this.state
+
+    if (showStartScreen === 'start') {
+      return this.renderStartScreen()
+    } else if (showStartScreen === 'game') {
+      return this.renderActiveGame()
+    } else if (showStartScreen === 'summary') {
+      return this.renderSummaryScreen()
+    }
+  }
+
+  render() {
     return (
       <div className="App">
         <h2> GAME OF NUMBER </h2>
-
-        {showStartScreen ? (
-          <StartScreen
-            PlayersList={this.state.players}
-            deletePlayer={this.deletePlayer}
-            startGame={this.startGame}
-            deleteAllPlayers={this.deleteAllPlayers}
-            addPlayer={this.addPlayer}
-          />
-        ) : (
-          this.renderActiveGame()
-        )}
-
-        <SummaryScreen />
+        {this.renderScreen()}
       </div>
     )
   }

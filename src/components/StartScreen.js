@@ -10,7 +10,7 @@ export default class StartScreen extends Component {
   renderUsers = () => {
     return this.props.PlayersList.map((player, i) => (
       <div key={i}>
-        {player.name}{' '}
+        {player.name}
         <button onClick={() => this.props.deletePlayer(i)}> X </button>
       </div>
     ))
