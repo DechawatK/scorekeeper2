@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import SummaryCard from './SummaryCard'
 import Button from './Button'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 export default class SummaryScreen extends Component {
@@ -8,18 +9,26 @@ export default class SummaryScreen extends Component {
     const { players, onAddRound, onBack } = this.props
     return (
       <div>
-        <h1>Summary Screen</h1>
-        {players.map(player => (
-          <SummaryCard title={player.name} scores={player.scores || []} />
+        <h1> Summary Screen </h1>
+        {players.map((player, i) => (
+          <SummaryCard
+            key={i}
+            title={player.name}
+            scores={player.scores || []}
+          />
         ))}
-        <Button onClick={onBack}>Back</Button>
+        <Button onClick={onBack}>
+          <Link to="/">Back</Link>
+        </Button>
         {players.length ? (
-          <Button onClick={onAddRound}>Add Round</Button>
+          <Button onClick={onAddRound}>
+            <Link to="/game">Add Round</Link>
+          </Button>
         ) : (
           <div>
-            <strong>Please add players</strong>
+            <strong> Please add players </strong>{' '}
           </div>
-        )}
+        )}{' '}
       </div>
     )
   }

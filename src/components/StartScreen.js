@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PlayerInput from './PlayerInput'
 import Button from './Button'
+import { Link } from 'react-router-dom'
 
 export default class StartScreen extends Component {
   render() {
@@ -19,7 +20,9 @@ export default class StartScreen extends Component {
   renderWarningOrPlayButton() {
     return (
       <React.Fragment>
-        <Button onClick={this.props.startGame}> Play! </Button>
+        <Button onClick={this.props.startGame}>
+          <Link to="/summary"> Play!</Link>
+        </Button>
         <Button onClick={this.props.deleteAllPlayers}>Delete all player</Button>
         <p> Please add player </p>
       </React.Fragment>

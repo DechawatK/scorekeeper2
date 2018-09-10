@@ -16,7 +16,7 @@ const StyledBoard = styled.section`
 export default class SummaryCard extends Component {
   static propTypes = {
     title: PropTypes.string,
-    scores: PropTypes.arrayOf(PropTypes.Number),
+    scores: PropTypes.arrayOf(PropTypes.number),
   }
   render() {
     const { title, scores } = this.props
