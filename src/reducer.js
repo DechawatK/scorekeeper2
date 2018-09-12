@@ -1,10 +1,22 @@
-export default function reducer(state, action = {}) {
-  if (action.type === 'DELETE_ALL_PLAYERS') {
+import ACTIONS from './actions'
+import {
+  load
+} from './services'
+
+const initialState = {
+  players: load('players') || [],
+}
+
+export default function reducer(state = initialState, action = {}) {
+  let index, players
+
+  switch (action.type) {
+  case ACTIONS.DELETE_ALL_PLAYERS:
     return {
       ...state,
       players: [],
     }
-  } else if (action.type === 'ADD_PLAYER') {
+  case ACTIONS.ADD_PLAYER:
     return {
       ...state,
       players: [
@@ -14,32 +26,48 @@ export default function reducer(state, action = {}) {
           roundScore: 0,
           scores: []
         },
-      ]
-    }
-  } else if (action.type === 'DELETE_PLAYER') {
-    const index = action.payload.index
-    return {
-      ...state,
-      players: [
-        ...state.players.slice(0, index),
-        ...state.players.slice(index + 1),
       ],
     }
-  } else if (action.type === 'UPDATE_SCORE') {
-    const value = action.payload.value
-    const index = action.payload.index
-
+  case ACTIONS.UPDATE_SCORE:
+    index = action.payload.index
+    players = state.players
+    return {
+      players: [
+        ...players.slice(0, index),
+        {
+          ...players[index],
+          roundScore: players[index].roundScore + action.payload.value,
+        },
+        ...players.slice(index + 1),
+      ],
+    }
+  case ACTIONS.RESET_SCORES:
+    return {
+      players: state.players.map(player => ({
+        ...player,
+        scores: [],
+      })),
+    }
+  case ACTIONS.DELETE_PLAYER:
     return {
       ...state,
       players: [
-        ...state.players.slice(0, index),
-        {
-          ...state.players[index],
-          roundScore: state.players[index].roundScore + value,
-        },
-        ...state.players.slice(index + 1),
-      ]
+        ...state.players.slice(0, action.payload.index),
+        ...state.players.slice(action.payload.index + 1),
+      ],
     }
+  case ACTIONS.SAVE_ROUND:
+    return {
+      ...state,
+      players: state.players.map(player => {
+        return {
+          ...player,
+          scores: [...player.scores, player.roundScore],
+          roundScore: 0,
+        }
+      }),
+    }
+  default:
+    return state
   }
-  return state
 }

@@ -12,7 +12,7 @@ export default class PlayerInput extends Component {
   }
 
   checkForEnterButton = event => {
-    if (event.key === 'Enter' && this.state.inputValue != '') {
+    if (event.key === 'Enter' && this.state.inputValue !== '') {
       this.props.onSubmit(this.state.inputValue)
       this.setState({
         inputValue: '',
@@ -26,7 +26,7 @@ export default class PlayerInput extends Component {
         <input
           onChange={this.updateInputValue}
           onKeyUp={this.checkForEnterButton}
-          placeholder="Player Name"
+          placeholder="Playername"
           autoFocus
           value={this.state.inputValue}
           type="text"

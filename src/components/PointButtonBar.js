@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Button from './Button'
 import styled from 'styled-components'
 
 const StyledButton = styled.button`
@@ -19,23 +18,23 @@ export default class ScoreUpdate extends Component {
     return (
       <div className="score-update">
         <StyledButton onClick={() => onClick(-10)} className="btn1">
-          -10
-        </StyledButton>
+          -10{' '}
+        </StyledButton>{' '}
         <StyledButton onClick={() => onClick(-5)} className="btn2">
-          -5
-        </StyledButton>
+          -5{' '}
+        </StyledButton>{' '}
         <StyledButton onClick={() => onClick(-1)} className="btn3">
-          -1
-        </StyledButton>
+          -1{' '}
+        </StyledButton>{' '}
         <StyledButton onClick={() => onClick(1)} className="btn4">
-          +1
-        </StyledButton>
+          +1{' '}
+        </StyledButton>{' '}
         <StyledButton onClick={() => onClick(5)} className="btn5">
-          +5
-        </StyledButton>
+          +5{' '}
+        </StyledButton>{' '}
         <StyledButton onClick={() => onClick(10)} className="btn6">
-          +10
-        </StyledButton>
+          +10{' '}
+        </StyledButton>{' '}
       </div>
     )
   }

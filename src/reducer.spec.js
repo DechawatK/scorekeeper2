@@ -1,138 +1,208 @@
+import ACTIONS from './actions'
 import reducer from './reducer'
 
 describe('reducer', () => {
-
   it('always returns a state', () => {
     const state = {
       players: [{
         foo: 'bar'
-      }]
+      }],
     }
-    const action = {
-      type: 'I do not really exits'
-    }
+
     expect(reducer(state, {
       type: 'foo'
     })).toBe(state)
+    expect(reducer(state, {})).toBe(state)
+    expect(reducer(state)).toBe(state)
   })
 
-  describe('UPDATE_SCORE', () => {
-    it('update score', () => {
+  describe(ACTIONS.SAVE_ROUND, () => {
+    it('saves a round: sets roundscore 0 and adds a score', () => {
       const state = {
         players: [{
-            name: 'John Doe',
-            roundScore: 0,
-            score: []
-          },
-          {
-            name: 'Jojo',
-            roundScore: 0,
-            score: []
-          },
-        ]
+          name: 'Johanna',
+          scores: [4, 10, 90],
+          roundScore: 8
+        }],
       }
       const action = {
-        type: 'UPDATE_SCORE',
-        payload: {
-          index: 1,
-          value: 10
-        }
+        type: ACTIONS.SAVE_ROUND,
       }
       expect(reducer(state, action)).toEqual({
         players: [{
-            name: 'John Doe',
-            roundScore: 0,
-            score: []
-          },
-          {
-            name: 'Jojo',
-            roundScore: 10,
-            score: []
-          },
-        ]
+          name: 'Johanna',
+          scores: [4, 10, 90, 8],
+          roundScore: 0
+        }],
       })
     })
   })
 
-  describe('DELETE_PLAYER', () => {
-    it('deletes a player', () => {
+  describe(ACTIONS.DELETE_PLAYER, () => {
+    it('deletes a single user', () => {
       const state = {
         players: [{
-            name: 'John Doe',
-            roundScore: 0,
-            score: []
-          },
-          {
-            name: 'Jojo',
-            roundScore: 0,
-            score: []
-          },
-          {
-            name: 'Lionell',
-            roundScore: 0,
-            score: []
-          },
+          name: 'Lewis',
+          roundScore: 0,
+          scores: [],
+        },
+        {
+          name: 'Lara',
+          roundScore: 10,
+          scores: [],
+        },
         ],
       }
       const action = {
-        type: 'DELETE_PLAYER',
+        type: ACTIONS.DELETE_PLAYER,
         payload: {
-          index: 0
-        }
+          index: 1,
+        },
       }
+
       expect(reducer(state, action)).toEqual({
         players: [{
-            name: 'Jojo',
-            roundScore: 0,
-            score: []
-          },
-          {
-            name: 'Lionell',
-            roundScore: 0,
-            score: []
-          },
-        ]
+          name: 'Lewis',
+          roundScore: 0,
+          scores: [],
+        }, ],
       })
     })
   })
 
-  describe('ADD_PLAYER', () => {
-    it('creates a players with name', () => {
+  describe(ACTIONS.RESET_SCORES, () => {
+    it('resets scores in every player object to empty array', () => {
+      const state = {
+        players: [{
+          name: 'Player 1',
+          scores: [20],
+          roundScore: 3
+        },
+        {
+          name: 'Player 2',
+          scores: [13],
+          roundScore: 4
+        },
+        {
+          name: 'Player 3',
+          scores: [15],
+          roundScore: 2
+        },
+        ],
+      }
+      const action = {
+        type: ACTIONS.RESET_SCORES,
+      }
+
+      expect(reducer(state, action)).toEqual({
+        players: [{
+          name: 'Player 1',
+          scores: [],
+          roundScore: 3
+        },
+        {
+          name: 'Player 2',
+          scores: [],
+          roundScore: 4
+        },
+        {
+          name: 'Player 3',
+          scores: [],
+          roundScore: 2
+        },
+        ],
+      })
+    })
+  })
+
+  describe(ACTIONS.UPDATE_SCORE, () => {
+    it('adds value to roundScore in one player array', () => {
+      const state = {
+        players: [{
+          name: 'Player 1',
+          scores: [20],
+          roundScore: 3
+        },
+        {
+          name: 'Player 2',
+          scores: [13],
+          roundScore: 4
+        },
+        {
+          name: 'Player 3',
+          scores: [15],
+          roundScore: 2
+        },
+        ],
+      }
+      const action = {
+        type: ACTIONS.UPDATE_SCORE,
+        payload: {
+          index: 1,
+          value: 7,
+        },
+      }
+
+      expect(reducer(state, action)).toEqual({
+        players: [{
+          name: 'Player 1',
+          scores: [20],
+          roundScore: 3
+        },
+        {
+          name: 'Player 2',
+          scores: [13],
+          roundScore: 11
+        },
+        {
+          name: 'Player 3',
+          scores: [15],
+          roundScore: 2
+        },
+        ],
+      })
+    })
+  })
+
+  describe(ACTIONS.ADD_PLAYER, () => {
+    it('creates a player with a name', () => {
       const state = {
         players: [],
       }
       const action = {
-        type: 'ADD_PLAYER',
+        type: ACTIONS.ADD_PLAYER,
         payload: {
-          name: 'John Doe'
-        }
+          name: 'Foobar',
+        },
       }
+
       expect(reducer(state, action)).toEqual({
         players: [{
-          name: 'John Doe',
+          name: 'Foobar',
           roundScore: 0,
-          scores: []
-        }, ]
+          scores: [],
+        }, ],
       })
     })
   })
 
-  describe('DELETE_ALL_PLAYERS', () => {
-    it('makes the players an empty array', () => {
+  describe(ACTIONS.DELETE_ALL_PLAYERS, () => {
+    it('empties array for players', () => {
       const state = {
         players: [{
           foo: 'bar'
         }, {
           baz: 'foobar'
-        }]
+        }],
       }
       const action = {
-        type: 'DELETE_ALL_PLAYERS'
+        type: ACTIONS.DELETE_ALL_PLAYERS
       }
 
       expect(reducer(state, action)).toEqual({
-        players: []
+        players: [],
       })
+      expect(reducer(state, action)).not.toBe(state)
     })
   })
 })

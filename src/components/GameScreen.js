@@ -5,14 +5,21 @@ import { Link } from 'react-router-dom'
 
 export default class GameScreen extends Component {
   render() {
-    const { players, updateScore, backToStart, resetScore, onSave } = this.props
+    const {
+      players,
+      onUpdateScore,
+      backToStart,
+      resetScore,
+      onSave,
+    } = this.props
     return (
       <React.Fragment>
         {players.map((player, index) => (
           <EditCard
+            key={index}
             title={player.name}
             score={player.roundScore}
-            onUpdate={score => updateScore(index, score)}
+            onUpdate={score => onUpdateScore(index, score)}
           />
         ))}
         <Button onClick={onSave}>Save</Button>

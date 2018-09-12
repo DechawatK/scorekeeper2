@@ -1,41 +1,45 @@
 import React, { Component } from 'react'
-import PlayerInput from './PlayerInput'
+
 import Button from './Button'
+import PlayerInput from './PlayerInput'
 import { Link } from 'react-router-dom'
 
 export default class StartScreen extends Component {
   render() {
-    return this.renderStartScreen()
+    const { onAddPlayer } = this.props
+
+    return (
+      <div>
+        <h1>StartScreen</h1>
+        {this.renderPlayers()}
+        <PlayerInput onSubmit={onAddPlayer} />
+        {this.renderWarningOrPlayButton()}
+      </div>
+    )
   }
 
-  renderUsers = () => {
-    return this.props.PlayersList.map((player, i) => (
-      <div key={i}>
-        {player.name}
-        <button onClick={() => this.props.deletePlayer(i)}> X </button>
+  renderPlayers() {
+    const { onDeletePlayer } = this.props
+
+    return this.props.players.map((player, i) => (
+      <div data-test-id="StartScreen-player" key={i}>
+        <span>{player.name}</span>
+        <span onClick={() => onDeletePlayer(i)}>&times;</span>
       </div>
     ))
   }
 
   renderWarningOrPlayButton() {
-    return (
-      <React.Fragment>
-        <Button onClick={this.props.startGame}>
-          <Link to="/summary"> Play!</Link>
-        </Button>
-        <Button onClick={this.props.deleteAllPlayers}>Delete all player</Button>
-        <p> Please add player </p>
-      </React.Fragment>
-    )
-  }
-
-  renderStartScreen() {
-    return (
-      <div>
-        <h1> StartScreen </h1> {this.renderUsers()}
-        <PlayerInput onSubmit={this.props.addPlayer} />
-        {this.renderWarningOrPlayButton()}
-      </div>
+    const { players, onDeleteAllPlayers } = this.props
+    return players.length ? (
+      <footer data-test-id="Startscreen-footer">
+        <Link to="/summary">
+          <Button>Play!</Button>
+        </Link>
+        <Button onClick={onDeleteAllPlayers}>or delete all players</Button>
+      </footer>
+    ) : (
+      <div data-test-id="StartScreen-hint">Please add some players.</div>
     )
   }
 }
