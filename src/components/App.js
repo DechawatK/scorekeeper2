@@ -1,66 +1,34 @@
 import React, { Component } from 'react'
+import { Provider } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { applyMiddleware, createStore } from 'redux'
-import {
-  addPlayer,
-  deleteAllPlayers,
-  deletePlayer,
-  saveRound,
-  updateScore,
-} from '../actions'
+import GameScreenContainer from '../containers/GameScreenContainer'
+import SetupScreenContainer from '../containers/SetupScreenContainer'
+import SummaryScreenContainer from '../containers/SummaryScreenContainer'
+import StartScreenContainer from '../containers/StartScreenContainer'
 import { saveToLocalStorage } from '../middlewares'
 import reducer from '../reducer'
-import GameScreen from './GameScreen'
-import StartScreen from './StartScreen'
-import SummaryScreen from './SummaryScreen'
+import '../App.css'
+import thunk from 'redux-thunk'
 
-const store = createStore(reducer, applyMiddleware(saveToLocalStorage))
+const store = createStore(
+  reducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  applyMiddleware(saveToLocalStorage, thunk)
+)
 
 class App extends Component {
-  componentDidMount() {
-    store.subscribe(() => {
-      this.forceUpdate()
-    })
-  }
-
-  renderGameScreen = () => {
-    const { dispatch, getState } = store
-    return (
-      <GameScreen
-        players={getState().players}
-        onUpdateScore={(index, value) =>
-          dispatch(updateScore({ index, value }))
-        }
-        onSave={() => dispatch(saveRound())}
-      />
-    )
-  }
-
-  renderStartScreen = () => {
-    const { dispatch, getState } = store
-    return (
-      <StartScreen
-        players={getState().players}
-        onDeleteAllPlayers={() => dispatch(deleteAllPlayers())}
-        onAddPlayer={name => dispatch(addPlayer({ name }))}
-        onDeletePlayer={index => dispatch(deletePlayer({ index }))}
-      />
-    )
-  }
-
-  renderSummaryScreen = () => {
-    const { players } = store.getState()
-    return <SummaryScreen players={players} />
-  }
-
   render() {
     return (
       <Router>
-        <div className="App">
-          <Route exact path="/" render={this.renderStartScreen} />
-          <Route path="/summary" render={this.renderSummaryScreen} />
-          <Route path="/game" render={this.renderGameScreen} />
-        </div>
+        <Provider store={store}>
+          <div className="App">
+            <Route exact path="/" component={StartScreenContainer} />
+            <Route path="/setup" component={SetupScreenContainer} />
+            <Route path="/summary" component={SummaryScreenContainer} />
+            <Route path="/game" component={GameScreenContainer} />
+          </div>
+        </Provider>
       </Router>
     )
   }

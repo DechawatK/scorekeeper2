@@ -1,19 +1,27 @@
 import React, { Component } from 'react'
-
-import Button from './Button'
-import PlayerInput from './PlayerInput'
+import Button from '../components/Button'
 import { Link } from 'react-router-dom'
+import PlayerInputContainer from '../containers/PlayerInputContainer'
+import PropTypes from 'prop-types'
 
-export default class StartScreen extends Component {
+export default class SetupScreen extends Component {
+  static propTypes = {
+    onDeletePlayer: PropTypes.func.isRequired,
+    onDeleteAllPlayers: PropTypes.func.isRequired,
+    players: PropTypes.arrayOf(PropTypes.object).isRequired,
+    gameTitle: PropTypes.string.isRequired,
+  }
+
   render() {
-    const { onAddPlayer } = this.props
-
     return (
       <div>
-        <h1>StartScreen</h1>
+        <h1>{this.props.gameTitle}</h1>
         {this.renderPlayers()}
-        <PlayerInput onSubmit={onAddPlayer} />
+        <PlayerInputContainer />
         {this.renderWarningOrPlayButton()}
+        <Link to="/">
+          <Button>Home</Button>
+        </Link>
       </div>
     )
   }

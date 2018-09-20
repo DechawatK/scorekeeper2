@@ -5,7 +5,8 @@ import PropTypes from 'prop-types'
 const StyledButton = styled.button`
   font-size: 20px;
   cursor: pointer;
-  background-color: hotpink;
+  background-color: lightgray;
+  border-radius: 5px;
 
   &:hover {
     background: lightblue;

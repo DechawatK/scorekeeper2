@@ -1,45 +1,10 @@
-body {
-  display: flex;
-  justify-content: center;
-}
-
-.App {
+.startgameboard {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-image: linear-gradient(white, rgb(124, 144, 235));
-  border: 1px solid rgb(124, 144, 235);
-  width: 60vh;
-  margin-top: 30px;
-  padding: 40px;
-}
-
-.score {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin-bottom: 40px;
-}
-
-.score-update {
-  display: flex;
-}
-
-.btn1,
-.btn2,
-.btn3,
-.btn4,
-.btn5,
-.btn6 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 25px;
-  width: 40px;
-  background-color: white;
-  border: 1px solid gray;
-  margin-bottom: 20px;
-  cursor: pointer;
+  padding: 40px 60px;
+  margin: 40px;
+  background-image: linear-gradient(white, rgba(214, 81, 214, 0.767));
+  border: 1px solid rgba(214, 81, 214, 0.767);
 }

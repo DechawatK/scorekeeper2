@@ -10,9 +10,10 @@ const StyledBar = styled.section`
   justify-content: center;
   font-size: 20px;
   background-color: gray;
-  color: yellow;
+  color: pink;
   height: 30px;
   width: 30px;
+  margin: 5px;
   border: 1px solid gray;
 `
 
@@ -30,7 +31,7 @@ export default class RoundsBar extends Component {
     return (
       <StyledComponent innerRef={this.scrollerRef}>
         {scores.map((score, i) => (
-          <StyledBar key={i}>{score}</StyledBar>
+          <StyledBar key={i}> {score} </StyledBar>
         ))}
       </StyledComponent>
     )
